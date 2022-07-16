@@ -3,6 +3,12 @@ class Geo{
   String lng;//": "-47.0653"
 Geo(this.lat,this.lng);
 Geo.fromJson(Map<String,dynamic> json):lat=json['lat'],lng=json['lng'];
+Map<String,dynamic> toMap(){
+  return {
+  "lat":lat,
+  "lng":lng,
+};
+}
 }
 class Company{
   String name;//": "Romaguera-Jacobson",
@@ -10,6 +16,13 @@ class Company{
   String bs;//": "e-enable strategic applications"
   Company(this.bs,this.catchPhrase,this.name);
   Company.fromJson(Map<String,dynamic> json):name=json['name'],catchPhrase=json['catchPhrase'],bs=json['bs'];
+  Map<String,dynamic> toMap(){
+    return {
+      "name":name,
+      "catchPhrase":catchPhrase,
+      "bs":bs,
+    };
+  }
 }
 class Address{
   String street;//": "Douglas Extension",
@@ -23,6 +36,14 @@ Address.fromJson(Map<String,dynamic> json):city=json['city'],
       suite=json['suite'],
       zipcode=json['zipcode'],
       geo=Geo.fromJson(json['zipcode']);
+  Map<String,dynamic> toMap(){
+    return {
+      "street":street,
+      "suite":suite,
+      "zipcode":zipcode,
+      "geo":geo.toMap(),
+    };
+  }
 }
 class Employee{
   int id;
@@ -30,20 +51,20 @@ class Employee{
   String username;//": "Samantha",
   String email;//: "Nathan@yesenia.net",
   String profile_image;//":"https://randomuser.me/api/portraits/men/2.jpg",
-  //Address address;
+  Address address;
   String phone;//": "1-463-123-4447",
   String website;//": null,
-  //Company company;//": {
-  Employee(this.name,this.id,this.email,this.phone,this.profile_image,this.username,this.website);
+  Company company;//": {
+  Employee(this.name,this.id,this.email,this.phone,this.profile_image,this.username,this.website,this.address,this.company);
   Employee.fromJson(Map<String,dynamic> json):id=json['zipcode'],
   name=json['name'],
   username=json['username'],
   email=json['email'],
   profile_image=json['profile_image'],
-  //address=json['address'],
+  address=Address.fromJson(json['address']),
   phone=json['phone'],
-  website=json['website'];
-  //company=json['company'];
+  website=json['website'],
+  company=Company.fromJson(json['company']);
   // toMap()
 
  Map<String, dynamic> toMap() {
@@ -55,6 +76,8 @@ class Employee{
     "profile_image": profile_image,
     "username": username,
     "website": website,
+    "address": address.toMap(),
+    "company": company.toMap(),
   };
   }
 }
