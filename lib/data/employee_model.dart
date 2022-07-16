@@ -31,11 +31,12 @@ class Address{
   String zipcode;//// ": "59590-4157",
   Geo geo;
 Address(this.city,this.street,this.suite,this.zipcode,this.geo);
-Address.fromJson(Map<String,dynamic> json):city=json['city'],
+Address.fromJson(Map<String,dynamic> json):
+      city=json['city'],
       street=json['street'],
       suite=json['suite'],
       zipcode=json['zipcode'],
-      geo=Geo.fromJson(json['zipcode']);
+      geo=Geo.fromJson(json['geo']);
   Map<String,dynamic> toMap(){
     return {
       "street":street,
@@ -56,7 +57,19 @@ class Employee{
   String website;//": null,
   Company company;//": {
   Employee(this.name,this.id,this.email,this.phone,this.profile_image,this.username,this.website,this.address,this.company);
-  Employee.fromJson(Map<String,dynamic> json):id=json['zipcode'],
+  factory Employee.fromJson(Map<String, dynamic> json) => Employee(
+      json['name'],
+      json['id'],
+      json['email'],
+      json['phone'] ?? '',
+    json['profile_image'],
+      json['username'],
+      json['website']??'',
+    Address.fromJson(json['address']),
+    Company.fromJson(json['company'])
+  );
+  /*Employee.fromJson(Map<String,dynamic> json):
+        id=json['id'],
   name=json['name'],
   username=json['username'],
   email=json['email'],
@@ -64,8 +77,8 @@ class Employee{
   address=Address.fromJson(json['address']),
   phone=json['phone'],
   website=json['website'],
-  company=Company.fromJson(json['company']);
-  // toMap()
+  company=json['company']==null?null:Company.fromJson(json['company']);
+  // toMap()*/
 
  Map<String, dynamic> toMap() {
   return {

@@ -6,3 +6,8 @@ abstract class EmployeeEvent {}
 class EmployeeSyncPress extends EmployeeEvent{}
 
 class EmployeeFetchPress extends EmployeeEvent{}
+
+class EmployeeSearchPress extends EmployeeEvent{
+  final String name;
+  EmployeeSearchPress({required this.name});
+}
