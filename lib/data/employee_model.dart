@@ -11,9 +11,9 @@ Map<String,dynamic> toMap(){
 }
 }
 class Company{
-  String name;//": "Romaguera-Jacobson",
-  String catchPhrase;//": "Face to face bifurcated interface",
-  String bs;//": "e-enable strategic applications"
+  String name;
+  String catchPhrase;
+  String bs;
   Company(this.bs,this.catchPhrase,this.name);
   Company.fromJson(Map<String,dynamic> json):name=json['name'],catchPhrase=json['catchPhrase'],bs=json['bs'];
   Map<String,dynamic> toMap(){
@@ -25,10 +25,10 @@ class Company{
   }
 }
 class Address{
-  String street;//": "Douglas Extension",
-  String suite;//": "Suite 847",
-  String city;//": "McKenziehaven",
-  String zipcode;//// ": "59590-4157",
+  String street;
+  String suite;
+  String city;
+  String zipcode;
   Geo geo;
 Address(this.city,this.street,this.suite,this.zipcode,this.geo);
 Address.fromJson(Map<String,dynamic> json):
@@ -48,14 +48,14 @@ Address.fromJson(Map<String,dynamic> json):
 }
 class Employee{
   int id;
-  String name; //"Clementine Bauch",
-  String username;//": "Samantha",
-  String email;//: "Nathan@yesenia.net",
-  String profile_image;//":"https://randomuser.me/api/portraits/men/2.jpg",
+  String name;
+  String username;
+  String email;
+  String profile_image;
   Address address;
-  String phone;//": "1-463-123-4447",
-  String website;//": null,
-  Company company;//": {
+  String phone;
+  String website;
+  Company company;
   Employee(this.name,this.id,this.email,this.phone,this.profile_image,this.username,this.website,this.address,this.company);
   factory Employee.fromJson(Map<String, dynamic> json) => Employee(
       json['name'],
@@ -68,18 +68,6 @@ class Employee{
     Address.fromJson(json['address']),
     Company.fromJson(json['company'])
   );
-  /*Employee.fromJson(Map<String,dynamic> json):
-        id=json['id'],
-  name=json['name'],
-  username=json['username'],
-  email=json['email'],
-  profile_image=json['profile_image'],
-  address=Address.fromJson(json['address']),
-  phone=json['phone'],
-  website=json['website'],
-  company=json['company']==null?null:Company.fromJson(json['company']);
-  // toMap()*/
-
  Map<String, dynamic> toMap() {
   return {
   "id": id,

@@ -37,13 +37,14 @@ dependencies:
   sqflite: ^2.0.3
   dio_http_cache: ^0.3.0
   expandable: ^5.0.1
+  cached_network_image: ^3.2.1
   #json_store: ^1.4.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 flutter_native_splash:
   color: "#FFFFFF"
-  image: "Assets/R.png"
+  image: "Assets/pd.png"
 dev_dependencies:
   flutter_test:
     sdk: flutter

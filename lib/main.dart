@@ -1,8 +1,8 @@
 import 'package:blocplay2/bloc/employee_bloc.dart';
 import 'package:blocplay2/layout/fetch_employee.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       home: const MyHomePage(),
+      debugShowCheckedModeBanner:false ,
     );
   }
 }
@@ -61,28 +62,37 @@ class _HomeView extends StatelessWidget{
                itemCount: list.length,
                //physics: const NeverScrollableScrollPhysics(),
                itemBuilder: (BuildContext context, int index) {
-                 return Padding(padding: const EdgeInsets.all(10),
+                 return Padding(padding: const EdgeInsets.only(left: 10,right: 10),
                  child:InkWell(
                    child:Card(
+                     color: Colors.purple[50],
+                     child:Padding(
+                     padding: const EdgeInsets.all(10),
                      child:Row(
                      children: [
-                       ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.network(list[index]['profile_image'].toString(),
+                       ClipRRect(borderRadius: BorderRadius.circular(10),
+                         child:Image(image: CachedNetworkImageProvider(list[index]['profile_image'].toString(),),
                          errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
-                           return ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.asset('Assets/blank.jpg',height: 80,));
+                           return ClipRRect(borderRadius: BorderRadius.circular(10),
+                               child:Image.asset('Assets/blank.jpg',height: 80,));
                          },height: 80,
                        ),
                        ),
                        Expanded(
-                        // width: double.infinity,
                          child:Padding(padding: const EdgeInsets.only(left: 20,right: 20),
-                           child:Column(children:[
-                            Text(list[index]['name'].toString()),
+                           child:Column(
+                             mainAxisAlignment: MainAxisAlignment.start,
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children:[
+                            Text(list[index]['name'].toString(),style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
+                                 if(list[index]['company']!=null)
+                                   Text('${list[index]['company']['name']}',),
                           ]
                          ),
                        ),
                       ),
                     ],
-                     ),
+                     ),),
                    ),
                    onTap: (){
                      Map<String,dynamic> map=list[index];
@@ -97,7 +107,7 @@ class _HomeView extends StatelessWidget{
        })
          ),
 
-     floatingActionButton:Column(
+     /*floatingActionButton:Column(
        mainAxisAlignment: MainAxisAlignment.end,
          crossAxisAlignment: CrossAxisAlignment.center,
          children:[
@@ -106,7 +116,8 @@ class _HomeView extends StatelessWidget{
          },child: const Icon(Icons.sync),
          ),
     ]
-   ));
+   )*/
+   );
   }
 }
 /////////////////////////////////////////////////////
@@ -121,7 +132,7 @@ class SearchPage extends StatelessWidget{
 }
 class SearchView extends StatelessWidget {
   SearchView({Key? key}) : super(key: key);
-  TextEditingController editingController=TextEditingController();
+  final TextEditingController editingController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,8 +162,7 @@ class SearchView extends StatelessWidget {
       body: Center(child:
       BlocBuilder<EmployeeBloc, List<dynamic>>(builder: (context, list){
         if(list.isEmpty){
-
-          return Text('Nothing Found!');
+          return const Text('Nothing Found!');
         }else{
           return ListView.builder(
               scrollDirection: Axis.vertical,
@@ -160,24 +170,43 @@ class SearchView extends StatelessWidget {
               //physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index)
               {
-                return Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  child:Padding(padding:const EdgeInsets.all(10),
-                    child:Row(children: [
-                      ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.network(list[index]['profile_image'].toString(),
-                        errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
-                          return ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.asset('Assets/blank.jpg',height: 80,));
-                        },height: 80,
-                      ),
-                      ),
-                      Expanded(
-                        //width: double.infinity,
-                        child:Padding(padding: const EdgeInsets.all(20),
-                          child:Text(list[index]['name'].toString()),
-                        ),
-                      ),
-                      //Text(list[index]['profile_image'].toString()),
-                    ],),
+                return Padding(padding: const EdgeInsets.only(left: 10,right: 10),
+                  child:InkWell(
+                    child:Card(
+                      color: Colors.purple[50],
+                      child:Padding(
+                        padding: const EdgeInsets.all(10),
+                        child:Row(
+                          children: [
+                            ClipRRect(borderRadius: BorderRadius.circular(10),
+                              child:Image(image: CachedNetworkImageProvider(list[index]['profile_image'].toString(),),
+                                errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
+                                  return ClipRRect(borderRadius: BorderRadius.circular(10),
+                                      child:Image.asset('Assets/blank.jpg',height: 40,));
+                                },height: 40,
+                              ),
+                            ),
+                            Expanded(
+                              child:Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+                                child:Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children:[
+                                      Text(list[index]['name'].toString(),style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
+                                      if(list[index]['company']!=null)
+                                        Text('${list[index]['company']['name']}',),
+                                    ]
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),),
+                    ),
+                    onTap: (){
+                      Map<String,dynamic> map=list[index];
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => DetailPage(map)));
+                    },
                   ),
                 );
               }

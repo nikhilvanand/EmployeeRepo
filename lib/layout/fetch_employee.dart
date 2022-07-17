@@ -1,12 +1,9 @@
-import 'package:blocplay2/data/employee_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/employee_bloc.dart';
 
 class DetailPage extends StatelessWidget {
   final Map<String, dynamic> employee;
-
   const DetailPage(this.employee);
 
   @override
@@ -42,6 +39,7 @@ class DetailView extends StatelessWidget{
               Padding(padding: const EdgeInsets.only(left: 5,right: 5),
                   child:
                     Card(
+                      color: Colors.purple[50],
                     child:Padding(padding: const EdgeInsets.all(15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
