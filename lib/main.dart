@@ -1,8 +1,8 @@
 import 'package:blocplay2/bloc/employee_bloc.dart';
 import 'package:blocplay2/layout/fetch_employee.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:blocplay2/data/db.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,17 +17,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.purple,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 class MyHomePage extends StatelessWidget{
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(create: (_)=>EmployeeBloc(),
-    child: _HomeView(),);
+    child: const _HomeView(),);
   }
 }
 class _HomeView extends StatelessWidget{
@@ -41,41 +43,58 @@ class _HomeView extends StatelessWidget{
          // Navigate to the Search Screen
          IconButton(
              onPressed: () => Navigator.of(context)
-                 .push(MaterialPageRoute(builder: (_) => SearchPage())),
+                 .push(MaterialPageRoute(builder: (_) => const SearchPage())),
              icon: const Icon(Icons.search))
        ],
      ),
      body:Center(child:
-       BlocBuilder<EmployeeBloc, List<dynamic>>(builder: (context, list){
-       if(list.isEmpty){
-         return Text('Data Not Synched!');
-       }else{
-             return ListView.builder(
-                 scrollDirection: Axis.vertical,
-                 itemCount: list.length,
-                 //physics: const NeverScrollableScrollPhysics(),
-                 itemBuilder: (BuildContext context, int index)
-             {
-               return Card(
-                 child:Padding(padding:const EdgeInsets.all(10),
-                     child:Row(children: [
-                       Image.network(list[index]['profile_image'].toString(),
+       BlocBuilder<EmployeeBloc, List<dynamic>>(builder: (context, list) {
+         if (list.isEmpty) {
+           /*return ElevatedButton(onPressed: (){
+           context.read<EmployeeBloc>().add(EmployeeSyncPress());
+         }, child: Text('Show Employees'));*/
+           context.read<EmployeeBloc>().add(EmployeeSyncPress());
+           return const Text('');
+         } else {
+           return ListView.builder(
+               scrollDirection: Axis.vertical,
+               itemCount: list.length,
+               //physics: const NeverScrollableScrollPhysics(),
+               itemBuilder: (BuildContext context, int index) {
+                 return Padding(padding: const EdgeInsets.all(10),
+                 child:InkWell(
+                   child:Card(
+                     child:Row(
+                     children: [
+                       ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.network(list[index]['profile_image'].toString(),
                          errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
-                         return Image.asset('Assets/blank.jpg');
-                       },),
+                           return ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.asset('Assets/blank.jpg',height: 80,));
+                         },height: 80,
+                       ),
+                       ),
                        Expanded(
-                         //width: double.infinity,
-                         child:Padding(padding: const EdgeInsets.all(20),
-                           child:Text(list[index]['name'].toString()),
+                        // width: double.infinity,
+                         child:Padding(padding: const EdgeInsets.only(left: 20,right: 20),
+                           child:Column(children:[
+                            Text(list[index]['name'].toString()),
+                          ]
                          ),
                        ),
-                       //Text(list[index]['profile_image'].toString()),
-                     ],),
+                      ),
+                    ],
+                     ),
+                   ),
+                   onTap: (){
+                     Map<String,dynamic> map=list[index];
+                     Navigator.of(context)
+                         .push(MaterialPageRoute(builder: (_) => DetailPage(map)));
+                   },
                  ),
-               );
-             });
-       }
-           }),
+                 );
+               }
+           );
+         }
+       })
          ),
 
      floatingActionButton:Column(
@@ -92,6 +111,8 @@ class _HomeView extends StatelessWidget{
 }
 /////////////////////////////////////////////////////
 class SearchPage extends StatelessWidget{
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(create: (_)=>EmployeeBloc(),
@@ -101,7 +122,6 @@ class SearchPage extends StatelessWidget{
 class SearchView extends StatelessWidget {
   SearchView({Key? key}) : super(key: key);
   TextEditingController editingController=TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,9 +135,9 @@ class SearchView extends StatelessWidget {
             child: Center(
               child: TextField(
                 decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
+                    //prefixIcon: const Icon(Icons.search),
                     suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
+                      icon: const Icon(Icons.search),
                       onPressed: () {
                         context.read<EmployeeBloc>().add(EmployeeSearchPress(name: editingController.text));
                       },
@@ -131,7 +151,8 @@ class SearchView extends StatelessWidget {
       body: Center(child:
       BlocBuilder<EmployeeBloc, List<dynamic>>(builder: (context, list){
         if(list.isEmpty){
-          return Text('Data Not Synched!');
+
+          return Text('Nothing Found!');
         }else{
           return ListView.builder(
               scrollDirection: Axis.vertical,
@@ -140,12 +161,15 @@ class SearchView extends StatelessWidget {
               itemBuilder: (BuildContext context, int index)
               {
                 return Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   child:Padding(padding:const EdgeInsets.all(10),
                     child:Row(children: [
-                      Image.network(list[index]['profile_image'].toString(),
+                      ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.network(list[index]['profile_image'].toString(),
                         errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
-                          return Image.asset('Assets/blank.jpg');
-                        },),
+                          return ClipRRect(borderRadius: BorderRadius.circular(10),child:Image.asset('Assets/blank.jpg',height: 80,));
+                        },height: 80,
+                      ),
+                      ),
                       Expanded(
                         //width: double.infinity,
                         child:Padding(padding: const EdgeInsets.all(20),
@@ -156,7 +180,8 @@ class SearchView extends StatelessWidget {
                     ],),
                   ),
                 );
-              });
+              }
+              );
         }
       }),
       ),

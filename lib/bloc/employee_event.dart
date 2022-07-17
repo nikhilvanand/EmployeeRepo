@@ -11,3 +11,7 @@ class EmployeeSearchPress extends EmployeeEvent{
   final String name;
   EmployeeSearchPress({required this.name});
 }
+class EmployeeDetailPress extends EmployeeEvent{
+  final List<dynamic> map;
+  EmployeeDetailPress({required this.map});
+}

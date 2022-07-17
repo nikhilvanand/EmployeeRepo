@@ -40,8 +40,19 @@ class EmployeeBloc extends Bloc<EmployeeEvent, List<dynamic>> {
         try {
           List<dynamic> list = response.data;
           List<dynamic> searchList = list.where((i) =>
-              i['name'].toString().contains(event.name)).toList();
+              i['name'].toString().toLowerCase().contains(event.name)).toList();
           emit(searchList);
+        } catch (e) {
+          emit([]);
+        }
+      },);
+      on<EmployeeDetailPress>((event, emit) async {
+        try {
+          List<dynamic> list = event.map;
+          List<dynamic> mapper=list[0];
+          String street= mapper[0]['street'];
+          list[0]['address']=street;
+          emit(list);
         } catch (e) {
           emit([]);
         }
