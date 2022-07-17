@@ -51,9 +51,6 @@ class _HomeView extends StatelessWidget{
      body:Center(child:
        BlocBuilder<EmployeeBloc, List<dynamic>>(builder: (context, list) {
          if (list.isEmpty) {
-           /*return ElevatedButton(onPressed: (){
-           context.read<EmployeeBloc>().add(EmployeeSyncPress());
-         }, child: Text('Show Employees'));*/
            context.read<EmployeeBloc>().add(EmployeeSyncPress());
            return const Text('');
          } else {
@@ -106,21 +103,10 @@ class _HomeView extends StatelessWidget{
          }
        })
          ),
-
-     /*floatingActionButton:Column(
-       mainAxisAlignment: MainAxisAlignment.end,
-         crossAxisAlignment: CrossAxisAlignment.center,
-         children:[
-       FloatingActionButton(onPressed: (){
-           context.read<EmployeeBloc>().add(EmployeeSyncPress());
-         },child: const Icon(Icons.sync),
-         ),
-    ]
-   )*/
    );
   }
 }
-/////////////////////////////////////////////////////
+////////////////////Search View/////////////////////////////////
 class SearchPage extends StatelessWidget{
   const SearchPage({Key? key}) : super(key: key);
 
@@ -153,7 +139,7 @@ class SearchView extends StatelessWidget {
                         context.read<EmployeeBloc>().add(EmployeeSearchPress(name: editingController.text));
                       },
                     ),
-                    hintText: 'Search...',
+                    hintText: 'Name or Company',
                     border: InputBorder.none),
                 controller: editingController,
               ),

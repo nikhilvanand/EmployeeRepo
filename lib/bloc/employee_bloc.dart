@@ -36,10 +36,18 @@ class EmployeeBloc extends Bloc<EmployeeEvent, List<dynamic>> {
           List<dynamic> list = response.data;
           List<dynamic> searchList = list.where((i) =>
           i['name'].toString().toLowerCase().contains(event.name)).toList();
+          for(int i=0;i<list.length;++i){
+            if(list[i]['company']!=null){
+              if(list[i]['company']['name'].toString().toLowerCase().contains(event.name)){
+                searchList.add(list[i]);
+              }
+          }
+          }
           emit(searchList);
         } catch (e) {
           emit([]);
         }
-      },);
+      },
+      );
   }
 }
