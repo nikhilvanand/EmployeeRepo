@@ -50,7 +50,9 @@ class _HomeView extends StatelessWidget{
              icon: const Icon(Icons.search,color: Colors.black,))
        ],
      ),
-     body:Center(child:
+     body:Center(
+      //direction: Axis.horizontal,
+      child:
        BlocBuilder<EmployeeBloc, List<dynamic>>(builder: (context, list) {
          if (list.isEmpty) {
            context.read<EmployeeBloc>().add(EmployeeSyncPress());
