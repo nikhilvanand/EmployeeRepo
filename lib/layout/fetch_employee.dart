@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/employee_bloc.dart';
@@ -14,19 +15,21 @@ class DetailPage extends StatelessWidget {
 }
 class DetailView extends StatelessWidget{
   final Map<String, dynamic> employee;
-  DetailView(this.employee);
+  const DetailView(this.employee);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(employee['name'].toString()),),
 
-        body:SingleChildScrollView(child:Padding(padding: EdgeInsets.all(20),
+        body:SingleChildScrollView(child:Padding(padding: const EdgeInsets.all(20),
             child:Column(children:[
-          ClipRRect(borderRadius: BorderRadius.circular(20),child:Image.network(employee['profile_image'].toString(),
-            errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
-              return ClipRRect(borderRadius: BorderRadius.circular(20),child:Image.asset('Assets/blank.jpg',));
-            },
-          ),
+          ClipRRect(borderRadius: BorderRadius.circular(20),
+            child:Image(image: CachedNetworkImageProvider(employee['profile_image'].toString(),),
+              errorBuilder: (BuildContext buildContext, Object object,StackTrace? stackTrace){
+                return ClipRRect(borderRadius: BorderRadius.circular(20),
+                    child:Image.asset('Assets/blank.jpg',height: 150,));
+              },height: 150,
+            ),
           ),
               Text(employee['name'].toString(),
                 style: TextStyle(
@@ -46,26 +49,111 @@ class DetailView extends StatelessWidget{
                       crossAxisAlignment: CrossAxisAlignment.start,
                       //runSpacing: 10,
                       children:[
-                    Text('Email         :${employee['email']}',
-                    style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),
-                      Text('Phone       :${employee['phone']}', style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
-                      Text('Username  :${employee['username']}', style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
-                      Text('Website   :${employee['website']}', style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
-                        Text('Address',style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
-                        Text('Suite     :${employee['address']['suite']}'),
-                        Text('Street    :${employee['address']['street']}'),
-                        Text('City    :${employee['address']['city']}'),
-                        if(employee['address']['geo']!=null)
-                        Text('Latitude    :${employee['address']['geo']['lat']}'),
-                        if(employee['address']['geo']!=null)
-                        Text('Longitude    :${employee['address']['geo']['lng']}'),
-                        Text('Company Details',style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800,),),
-                        if(employee['company']!=null)
-                        Text('Name     :${employee['company']['name']}',),
-                        if(employee['company']!=null)
-                        Text('CatchPhrase     :${employee['company']['catchPhrase']}',),
-                        if(employee['company']!=null)
-                        Text('BS     :${employee['company']['bs']}',),
+                        Table(
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(2),
+                          },
+                          children: [
+                            TableRow(
+                              children: [
+                                TableCell(child: Text('Phone',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
+                                TableCell(child: Text('${employee['phone']}',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(child: Text('Email',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
+                                TableCell(child: Text('${employee['email']}',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(child: Text('Username',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
+                                TableCell(child: Text('${employee['username']}',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(child: Text('Website',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
+                                TableCell(child: Text('${employee['website']}',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                TableCell(child: Text('Address',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
+                                TableCell(child: Text('',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const TableCell(child: Text('Suite')),
+                                TableCell(child: Text('${employee['address']['suite']}'),),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const TableCell(child: Text('Street')),
+                                TableCell(child: Text('${employee['address']['street']}'),),
+                              ],
+                            ),
+                            TableRow(
+                              children: [
+                                const TableCell(child: Text('City')),
+                                TableCell(child: Text('${employee['address']['city']}'),),
+                              ],
+                            ),
+                            TableRow(
+                                children: [
+                                  const TableCell(child:
+                                    Text('Latitude')),
+                                  TableCell(child:
+                                  Text('${employee['address']['geo']['lat']??''}'),)
+                                ],
+                              ),
+                            TableRow(
+                              children: [
+                                const TableCell(child:
+                                Text('Longitude')),
+                                TableCell(child:
+                                Text('${employee['address']['geo']['lng']??''}'),)
+                              ],
+                            ),
+                             /*TableRow(
+                                children: [
+                                  TableCell(child:
+                                  Text('Company',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
+                                  TableCell(child:
+                                  Text('',
+                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
+                                ],
+                              ),*/
+                            TableRow(
+                              children: [
+                                TableCell(child:
+                                Text('Company',style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800))),
+                                TableCell(
+                                    child:Column(children:[
+                                      if(employee['company']!=null)
+                                    Text(employee['company']['name']),
+                                  ]
+                                ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                     ],
                     ),),
                     ),
