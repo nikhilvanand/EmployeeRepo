@@ -39,13 +39,15 @@ class _HomeView extends StatelessWidget{
   Widget build(BuildContext context) {
    return Scaffold(
      appBar: AppBar(
-       title: const Text('Employee Records'),
+      backgroundColor: Colors.transparent,      
+      elevation: 0,
+       title: const Text('Employee Records',style: TextStyle(color: Colors.black),),
        actions: [
          // Navigate to the Search Screen
          IconButton(
              onPressed: () => Navigator.of(context)
                  .push(MaterialPageRoute(builder: (_) => const SearchPage())),
-             icon: const Icon(Icons.search))
+             icon: const Icon(Icons.search,color: Colors.black,))
        ],
      ),
      body:Center(child:

@@ -59,7 +59,7 @@ class DetailView extends StatelessWidget{
                               children: [
                                 TableCell(child: Text('Phone',
                                   style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
-                                TableCell(child: Text('${employee['phone']}',
+                                TableCell(child: Text('${employee['phone']??''}',
                                   style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
                               ],
                             ),
@@ -116,37 +116,30 @@ class DetailView extends StatelessWidget{
                             TableRow(
                                 children: [
                                   const TableCell(child:
-                                    Text('Latitude')),
-                                  TableCell(child:
-                                  Text('${employee['address']['geo']['lat']??''}'),)
+                                    Text('Geo')),
+                                  TableCell(child:Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children:[
+                                      if(employee['address']['geo']!=null)
+                                    Text(employee['address']['geo']['lat']+','+employee['address']['geo']['lng']),
+                                  ]
+                                ),)
                                 ],
                               ),
-                            TableRow(
-                              children: [
-                                const TableCell(child:
-                                Text('Longitude')),
-                                TableCell(child:
-                                Text('${employee['address']['geo']['lng']??''}'),)
-                              ],
-                            ),
-                             /*TableRow(
-                                children: [
-                                  TableCell(child:
-                                  Text('Company',
-                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),),
-                                  TableCell(child:
-                                  Text('',
-                                  style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800),),)
-                                ],
-                              ),*/
                             TableRow(
                               children: [
                                 TableCell(child:
                                 Text('Company',style: TextStyle(color: Colors.grey[800],fontWeight: FontWeight.w800))),
                                 TableCell(
-                                    child:Column(children:[
+                                    child:Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children:[
                                       if(employee['company']!=null)
                                     Text(employee['company']['name']),
+                                     if(employee['company']!=null)
+                                    Text(employee['company']['catchPhrase']),
+                                     if(employee['company']!=null)
+                                    Text(employee['company']['bs']),
                                   ]
                                 ),
                                 )
